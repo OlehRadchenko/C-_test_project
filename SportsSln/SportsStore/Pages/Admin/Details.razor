@@ -1,0 +1,25 @@
+﻿@page "/admin/products/details/{id:long}"
+<h3 class="bg-info text-white text-center p-1">Informacje szczegółowe</h3>
+<table class="table table-sm table-bordered table-striped">
+    <tbody>
+        <tr><th>ID</th><td>@Product.ProductID</td></tr>
+        <tr><th>Produkt</th><td>@Product.Name</td></tr>
+        <tr><th>Opis</th><td>@Product.Description</td></tr>
+        <tr><th>Kategoria</th><td>@Product.Category</td></tr>
+        <tr><th>Cena</th><td>@Product.Price.ToString("C")</td></tr>
+    </tbody>
+</table> 
+<NavLink class="btn btn-warning" href="@EditUrl">Edytuj</NavLink>
+<NavLink class="btn btn-secondary" href="/admin/products">Wróć</NavLink>
+@code {
+    [Inject]
+    public IStoreRepository Repository { get; set; }
+    [Parameter]
+    public long Id { get; set; }
+    public Product Product { get; set; }
+    protected override void OnParametersSet()
+    {
+        Product = Repository.Products.FirstOrDefault(p => p.ProductID == Id);
+    }
+    public string EditUrl => $"/admin/products/edit/{Product.ProductID}";
+} 
